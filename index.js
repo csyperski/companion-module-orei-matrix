@@ -1,6 +1,6 @@
 // OREI HDMI MATRIX EXTENDER
 
-let tcp = require('net')
+let tcp = require('../../tcp')
 let instance_skel = require('../../instance_skel')
 
 var debug
@@ -49,7 +49,7 @@ class instance extends instance_skel {
 
 	init() {
 		debug = this.debug
-		log = this.log
+		log = this.log;
 		this.updateConfig(this.config)
 	}
 
@@ -457,6 +457,13 @@ class instance extends instance_skel {
                                                 default: 'ON',
                                                 choices: this.CHOICES_POWER,
                                         },
+                                        {
+						type: 'dropdown',
+						label: 'Which device to set state?',
+						id: 'output',
+						default: '1',
+						choices: this.CHOICES_OUTPUTS,
+					}
                                 ],
                         },
 		}
@@ -465,6 +472,7 @@ class instance extends instance_skel {
 
 	action(action) {
 		let options = action.options
+						log = this.log('info', 'action called: ' + action.action);
 		switch (action.action) {
 			case 'select_input':
 				this.selectedInput = options.input
@@ -512,9 +520,13 @@ class instance extends instance_skel {
 				this.sendCommmand('s power ' + options.power + '!')
 				break
 			case 'power_hdmi':
-				this.sendCommmand('s cec hdmi out ' + + options.output + ' ' + options.power + '!')
-				this.sendCommmand('s cec hdbt out ' + + options.output + ' ' + options.power + '!')
-				break				
+				this.log('info', JSON.stringify( options ) )
+				this.log('info', 'Attempting to shutdown');
+				this.sendCommmand('s power ' + options.power + '!');
+				const powerAction = options.power_hdmi === '0' ? 'off' : 'on';			
+				this.sendCommmand('s cec hdmi out ' + options.output + ' ' + powerAction+ '!')
+				this.sendCommmand('s cec hdbt out ' + options.output + ' ' + powerAction + '!')
+				break	;			
 		} // note that internal status values are set immediately for feedback responsiveness and will be updated gain when the unit reponds (hopefully with the same value!)
 		this.checkFeedbacks()
 	}
