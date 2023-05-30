@@ -1,6 +1,6 @@
 // OREI HDMI MATRIX EXTENDER
 
-let tcp = require('../../tcp')
+let tcp = require('net')
 let instance_skel = require('../../instance_skel')
 
 var debug
@@ -239,7 +239,7 @@ class instance extends instance_skel {
 				id: 'info',
 				width: 12,
 				label: 'Information',
-				value: 'This module will connect to an OREI HDMI MATRIX EXTENDER',
+				value: 'This module will connect to an OREI HDMI MATRIX EXTENDER (District 88 Fork)',
 			},
 			{
 				type: 'textinput',
@@ -447,6 +447,18 @@ class instance extends instance_skel {
 					},
 				],
 			},
+			power_hdmi: {
+                                label: 'Power control (hdmi)',
+                                options: [
+                                        {
+                                                type: 'dropdown',
+                                                label: 'Power control (hdmi)',
+                                                id: 'power_hdmi',
+                                                default: 'ON',
+                                                choices: this.CHOICES_POWER,
+                                        },
+                                ],
+                        },
 		}
 		this.setActions(actions)
 	}
@@ -499,6 +511,10 @@ class instance extends instance_skel {
 			case 'power':
 				this.sendCommmand('s power ' + options.power + '!')
 				break
+			case 'power_hdmi':
+				this.sendCommmand('s cec hdmi out ' + + options.output + ' ' + options.power + '!')
+				this.sendCommmand('s cec hdbt out ' + + options.output + ' ' + options.power + '!')
+				break				
 		} // note that internal status values are set immediately for feedback responsiveness and will be updated gain when the unit reponds (hopefully with the same value!)
 		this.checkFeedbacks()
 	}

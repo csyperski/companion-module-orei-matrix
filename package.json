@@ -1,24 +1,32 @@
 {
-	"name": "orei-matrix",
-	"version": "1.0.0",
-	"api_version": "1.0.0",
-	"keywords": [ "HDMI Matrix" ],
-	"manufacturer": "OREI",
-	"product": "MATRIX EXTENDER",
-	"shortname": "MATRIX EXTENDER",
-	"description": "OREI HDMI MATRIX EXTENDER 4x4 or 8x8",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/bitfocus/companion-module-orei-matrix.git"
-	},
-	"author": "James Rankin <james@rankinfamily.com>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/bitfocus/companion-module-orei-matrix/issues"
-	},
-	"homepage": "https://github.com/bitfocus/companion-module-orei-matrix#readme"
+  "name": "orei-matrix",
+  "version": "1.0.0",
+  "api_version": "1.0.0",
+  "keywords": [
+    "HDMI Matrix"
+  ],
+  "manufacturer": "OREI1",
+  "product": "MATRIX EXTENDER (district 88)",
+  "shortname": "MATRIX EXTENDER (district 88)",
+  "description": "OREI HDMI MATRIX EXTENDER 4x4 or 8x8",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csyperski/companion-module-orei-matrix.git"
+  },
+  "author": "Charles Syperski <csyperski@dupage88.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/csyperski/companion-module-orei-matrix/issues"
+  },
+  "homepage": "https://github.com/csyperski/companion-module-orei-matrix#readme",
+  "dependencies": {
+    "@companion-module/base": "~1.4.0"
+  },
+  "devDependencies": {
+    "@companion-module/tools": "^1.2.0"
+  }
 }
