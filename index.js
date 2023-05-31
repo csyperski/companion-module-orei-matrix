@@ -543,7 +543,7 @@ class instance extends instance_skel {
 	}
 	
 	performPowerChange(outputType, outputId, powerAction) {
-		this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
+		this.sendCommmand('s cec '+outputType+' out ' + outputId + ' ' + powerAction+ '!')
 	}
 
 	initFeedbacks() {
