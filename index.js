@@ -447,13 +447,13 @@ class instance extends instance_skel {
 					},
 				],
 			},
-			power_hdmi: {
-                                label: 'Power control (hdmi)',
+			power_advanced: {
+                                label: 'Advanced power control',
                                 options: [
                                         {
                                                 type: 'dropdown',
                                                 label: 'Power control action',
-                                                id: 'power_hdmi',
+                                                id: 'power',
                                                 default: 'ON',
                                                 choices: this.CHOICES_POWER,
                                         },
@@ -463,6 +463,13 @@ class instance extends instance_skel {
 						id: 'output',
 						default: '1',
 						choices: [{ id: '-1', label: 'All'}].concat(this.CHOICES_OUTPUTS),
+					},
+					{
+						type: 'dropdown',
+						label: 'What output type?',
+						id: 'outputtype',
+						default: 'hdbt',
+						choices: [{ id: 'hdbt', label: 'HDBT'}, { id: 'hdmi', label: 'HDMI'} ]
 					}
                                 ],
                         },
@@ -518,18 +525,18 @@ class instance extends instance_skel {
 			case 'power':
 				this.sendCommmand('s power ' + options.power + '!')
 				break
-			case 'power_hdmi':
-				const powerAction = options.power_hdmi === '0' ? 'off' : 'on';	
+			case 'power_advanced':
+				const powerAction = options.power === '0' ? 'off' : 'on';	
 				const outputDevice = +options.output;
+				const outputType = options.outputtype;
 			
 				if ( outputDevice >= 0 ) {	
-					this.sendCommmand('s cec hdmi out ' + options.output + ' ' + powerAction+ '!')
-					this.sendCommmand('s cec hdbt out ' + options.output + ' ' + powerAction + '!')
+					this.sendCommmand('s cec '+outputType+' out ' + options.output + ' ' + powerAction+ '!')
+					this.sendCommmand('s cec '+outputType+' out ' + options.output + ' ' + powerAction + '!')
 				} else {
 					for( let i = 0; i < this.CHOICES_OUTPUTS.length; i++ ) {
-						this.log('info', 's cec hdmi out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!');
-						this.sendCommmand('s cec hdmi out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
-						this.sendCommmand('s cec hdbt out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction + '!')						
+						this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
+						this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction + '!')						
 					}
 				}
 				break	;			
