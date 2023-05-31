@@ -239,7 +239,7 @@ class instance extends instance_skel {
 				id: 'info',
 				width: 12,
 				label: 'Information',
-				value: 'This module will connect to an OREI HDMI MATRIX EXTENDER (District 88 Fork)',
+				value: 'This module will connect to an OREI HDMI MATRIX EXTENDER (District 88 version)',
 			},
 			{
 				type: 'textinput',
@@ -452,7 +452,7 @@ class instance extends instance_skel {
                                 options: [
                                         {
                                                 type: 'dropdown',
-                                                label: 'Power control (hdmi)',
+                                                label: 'Power control action',
                                                 id: 'power_hdmi',
                                                 default: 'ON',
                                                 choices: this.CHOICES_POWER,
@@ -462,7 +462,7 @@ class instance extends instance_skel {
 						label: 'Which device to set state?',
 						id: 'output',
 						default: '1',
-						choices: this.CHOICES_OUTPUTS,
+						choices: [{ id: '-1', label: 'All'}].concat(this.CHOICES_OUTPUTS),
 					}
                                 ],
                         },
@@ -472,7 +472,6 @@ class instance extends instance_skel {
 
 	action(action) {
 		let options = action.options
-						log = this.log('info', 'action called: ' + action.action);
 		switch (action.action) {
 			case 'select_input':
 				this.selectedInput = options.input
@@ -520,12 +519,19 @@ class instance extends instance_skel {
 				this.sendCommmand('s power ' + options.power + '!')
 				break
 			case 'power_hdmi':
-				this.log('info', JSON.stringify( options ) )
-				this.log('info', 'Attempting to shutdown');
-				this.sendCommmand('s power ' + options.power + '!');
-				const powerAction = options.power_hdmi === '0' ? 'off' : 'on';			
-				this.sendCommmand('s cec hdmi out ' + options.output + ' ' + powerAction+ '!')
-				this.sendCommmand('s cec hdbt out ' + options.output + ' ' + powerAction + '!')
+				const powerAction = options.power_hdmi === '0' ? 'off' : 'on';	
+				const outputDevice = +options.output;
+			
+				if ( outputDevice >= 0 ) {	
+					this.sendCommmand('s cec hdmi out ' + options.output + ' ' + powerAction+ '!')
+					this.sendCommmand('s cec hdbt out ' + options.output + ' ' + powerAction + '!')
+				} else {
+					for( let i = 0; i < this.CHOICES_OUTPUTS.length; i++ ) {
+						this.log('info', 's cec hdmi out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!');
+						this.sendCommmand('s cec hdmi out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
+						this.sendCommmand('s cec hdbt out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction + '!')						
+					}
+				}
 				break	;			
 		} // note that internal status values are set immediately for feedback responsiveness and will be updated gain when the unit reponds (hopefully with the same value!)
 		this.checkFeedbacks()
