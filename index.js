@@ -531,17 +531,19 @@ class instance extends instance_skel {
 				const outputType = options.outputtype;
 			
 				if ( outputDevice >= 0 ) {	
-					this.sendCommmand('s cec '+outputType+' out ' + options.output + ' ' + powerAction+ '!')
-					this.sendCommmand('s cec '+outputType+' out ' + options.output + ' ' + powerAction + '!')
+					this.performPowerChange(outputType, options.output, powerAction );
 				} else {
 					for( let i = 0; i < this.CHOICES_OUTPUTS.length; i++ ) {
-						this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
-						this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction + '!')						
+						this.performPowerChange(outputType, this.CHOICES_OUTPUTS[i].id, powerAction );
 					}
 				}
 				break	;			
 		} // note that internal status values are set immediately for feedback responsiveness and will be updated gain when the unit reponds (hopefully with the same value!)
 		this.checkFeedbacks()
+	}
+	
+	performPowerChange(outputType, outputId, powerAction) {
+		this.sendCommmand('s cec '+outputType+' out ' + this.CHOICES_OUTPUTS[i].id + ' ' + powerAction+ '!')
 	}
 
 	initFeedbacks() {
