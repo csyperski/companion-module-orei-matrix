@@ -473,6 +473,17 @@ class instance extends instance_skel {
 					}
                                 ],
                         },
+                        raw_telnet: {
+                                label: 'Execute Raw Telnet Command',
+                                options: [
+                                        {
+                                                type: 'textinput',
+                                                label: 'Command',
+                                                id: 'telnet',
+                                                value: '',
+                                        }
+                                ],
+                        },
 		}
 		this.setActions(actions)
 	}
@@ -537,7 +548,11 @@ class instance extends instance_skel {
 						this.performPowerChange(outputType, this.CHOICES_OUTPUTS[i].id, powerAction );
 					}
 				}
-				break	;			
+				break	;	
+			case 'raw_telnet':
+				const telnet = options.telnet;
+				this.sendCommmand(telnet)
+				break	;		
 		} // note that internal status values are set immediately for feedback responsiveness and will be updated gain when the unit reponds (hopefully with the same value!)
 		this.checkFeedbacks()
 	}
